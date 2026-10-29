@@ -8,7 +8,7 @@ public class Withdrawal extends Transaction
    private CashDispenser cashDispenser; // reference to cash dispenser
 
    // constant corresponding to menu option to cancel
-   private final static int CANCELED = 6;
+   private final static int CANCELLED = 7;
 
    // Withdrawal constructor
    public Withdrawal( int userAccountNumber, Screen atmScreen, 
@@ -39,8 +39,8 @@ public class Withdrawal extends Transaction
          // obtain a chosen withdrawal amount from the user 
          amount = displayMenuOfAmounts();
          
-         // check whether user chose a withdrawal amount or canceled
-         if ( amount != CANCELED )
+         // check whether user chose a withdrawal amount or cancelled
+         if ( amount != CANCELLED )
          {
             // get available balance of account involved
             availableBalance = 
@@ -92,19 +92,20 @@ public class Withdrawal extends Transaction
       Screen screen = getScreen(); // get screen reference
       
       // array of amounts to correspond to menu numbers
-      int amounts[] = { 0, 20, 40, 60, 100, 200 };
+      int amounts[] = { 0, 100, 200, 300, 500, 1000 };
 
       // loop while no valid choice has been made
       while ( userChoice == 0 )
       {
          // display the menu
          screen.displayMessageLine( "\nWithdrawal Menu:" );
-         screen.displayMessageLine( "1 - $20" );
-         screen.displayMessageLine( "2 - $40" );
-         screen.displayMessageLine( "3 - $60" );
-         screen.displayMessageLine( "4 - $100" );
-         screen.displayMessageLine( "5 - $200" );
-         screen.displayMessageLine( "6 - Cancel transaction" );
+         screen.displayMessageLine( "1 - $100" );
+         screen.displayMessageLine( "2 - $200" );
+         screen.displayMessageLine( "3 - $300" );
+         screen.displayMessageLine( "4 - $500" );
+         screen.displayMessageLine( "5 - $1000" );
+         screen.displayMessageLine( "6 - Custom Amount" );
+         screen.displayMessageLine( "7 - Cancel transaction" );
          screen.displayMessage( "\nChoose a withdrawal amount: " );
 
          int input = keypad.getInput(); // get user input through keypad
@@ -112,19 +113,29 @@ public class Withdrawal extends Transaction
          // determine how to proceed based on the input value
          switch ( input )
          {
-            case 1: // if the user chose a withdrawal amount 
-            case 2: // (i.e., chose option 1, 2, 3, 4 or 5), return the
-            case 3: // corresponding amount from amounts array
-            case 4:
-            case 5:
-               userChoice = amounts[ input ]; // save user's choice
+             case 1:
+             case 2:
+             case 3:
+             case 4:
+             case 5:
+                 userChoice = amounts[ input ]; // save user's choice
+                 break;
+             case 6: 
+               int number;
+               screen.displayMessage( "\nPlease enter an amount: " );
+               number = keypad.getInput();
+               while ( number % 100 != 0 || number == 0){
+                   screen.displayMessage( "\nPlease enter a valid amount (multiples of 100 and not equal to 0): " );
+                   number = keypad.getInput();
+               } // check whether the amount input by user is valid (multiples of 100 and not equal to 0)
+               userChoice = number; // save user's choice
                break;       
-            case CANCELED: // the user chose to cancel
-               userChoice = CANCELED; // save user's choice
+            case CANCELLED: // the user chose to cancel
+               userChoice = CANCELLED; // save user's choice
                break;
-            default: // the user did not enter a value from 1-6
+            default: // the user did not enter a value from 1-7
                screen.displayMessageLine( 
-                  "\nIvalid selection. Try again." );
+                  "\nInvalid selection. Try again." );
          } // end switch
       } // end while
 
