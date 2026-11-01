@@ -57,7 +57,7 @@ public class Transfer extends Transaction {
         bank.debit(myAccount, amount);
         bank.credit(toAccount, amount);
 
-        screen.displayMessage("\nTransferred HKD ");
+        screen.displayMessage("\nTransferred ");
         screen.displayDollarAmount(amount);
         screen.displayMessageLine(" to " + toAccount + " OK.");
     }
