@@ -32,6 +32,21 @@ public class BalanceInquiry extends Transaction
       screen.displayMessage( "\n - Total balance:     " );
       screen.displayDollarAmount( totalBalance );
       screen.displayMessageLine( "" );
+      Account acc = bankDatabase.getAccount( getAccountNumber() );
+      if ( acc instanceof SavingsAccount )
+      {
+         SavingsAccount sa = (SavingsAccount) acc;
+         screen.displayMessage( "\n - Interest rate:     " );
+         screen.displayMessageLine( 
+            String.format( "%.1f%% p.a.", sa.getInterestRate() * 100 ) );
+      }
+      else if ( acc instanceof ChequeAccount )
+      {
+         ChequeAccount ca = (ChequeAccount) acc;
+         screen.displayMessage( "\n - Limit per cheque:  " );
+         screen.displayDollarAmount( ca.getLimitPerCheque() );
+      }
+      screen.displayMessageLine( "" );
    } // end method execute
 } // end class BalanceInquiry
 
